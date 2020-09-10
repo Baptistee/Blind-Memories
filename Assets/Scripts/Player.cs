@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     Vector2 movement;
-    public float movespeed = 5f;
+    public float movespeed = 10f;
     public Transform camTransform;
 
     // Start is called before the first frame update
