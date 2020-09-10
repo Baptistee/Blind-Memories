@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 5735ce6fd04b59f49bcc3f353a47f25d
+timeCreated: 1515758056
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - m_bufAShader: {fileID: 4800000, guid: eb09bfcee4ccb314190c1b5af39e5fc1, type: 3}
+  - m_bufAChannel1Input: {fileID: 2800000, guid: 3d43d3f33b4b1984caaf5c17fa28cf5f,
+      type: 3}
+  - m_imageShader: {fileID: 4800000, guid: d7a460297bd380449bf752f42660d4ae, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
