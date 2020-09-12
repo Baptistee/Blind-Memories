@@ -1,12 +1,12 @@
-﻿Shader "ShaderToy/KindergartenArtClass3-BufA"
+﻿Shader "Assets/WavePropagation-BufA"
 {
 	Properties
 	{
-		_Channel0 ("iChannel0", 2D) = "black" {}
-		_Channel1 ("iChannel1", 2D) = "black" {}
-		_Channel2 ("iChannel2", 2D) = "black" {}
+		_Channel0("iChannel0", 2D) = "black" {}
+		_Channel1("iChannel1", 2D) = "black" {}
+		_Channel2("iChannel2", 2D) = "black" {}
 	}
-	SubShader
+		SubShader
 	{
 		// No culling or depth
 		Cull Off ZWrite Off ZTest Always
@@ -17,7 +17,7 @@
 
 			#pragma vertex vert
 			#pragma fragment frag
-			
+
 			#include "UnityCG.cginc"
 
 			struct appdata
@@ -73,17 +73,17 @@
 
 			bool isPressed(int key)
 			{
-				float val = tex2D(iChannel2, float2( (float(key) + 0.5) / 256.0, 0.25) ).x;
+				float val = tex2D(iChannel2, float2((float(key) + 0.5) / 256.0, 0.25)).x;
 				return val > .5;
 			}
 
 			bool isToggled(int key)
 			{
-				float val = tex2D(iChannel2, float2( (float(key) + 0.5) / 256.0, 0.75) ).x;
+				float val = tex2D(iChannel2, float2((float(key) + 0.5) / 256.0, 0.75)).x;
 				return val > .5;
 			}
 
-			int getState(int state)
+			int getState(float state)
 			{
 				bool change = isToggled(67);
 
@@ -134,7 +134,7 @@
 				return fragColor;
 			}
 
-			float2 hash2(float n) { return frac(sin(float2(n, n + 1.0))*float2(43758.5453123, 22578.1459123)); }
+			float2 hash2(float n) { return frac(sin(float2(n, n + 1.0)) * float2(43758.5453123, 22578.1459123)); }
 
 			// smoothstep interpolation of texture
 			float4 ssamp(float2 uv, float oct)
@@ -151,7 +151,7 @@
 				x -= f;
 
 				// apply smoothstep to fractional part
-				f = f * f*(3.0 - 2.0*f);
+				f = f * f * (3.0 - 2.0 * f);
 
 				// reapply fractional part
 				x += f;
@@ -165,8 +165,8 @@
 
 
 			static float2 e = float2(1. / 256., 0.);
-			float4 dx(float2 uv, float oct) { return (ssamp(uv + e.xy, oct) - ssamp(uv - e.xy, oct)) / (2.*e.x); }
-			float4 dy(float2 uv, float oct) { return (ssamp(uv + e.yx, oct) - ssamp(uv - e.yx, oct)) / (2.*e.x); }
+			float4 dx(float2 uv, float oct) { return (ssamp(uv + e.xy, oct) - ssamp(uv - e.xy, oct)) / (2. * e.x); }
+			float4 dy(float2 uv, float oct) { return (ssamp(uv + e.yx, oct) - ssamp(uv - e.yx, oct)) / (2. * e.x); }
 
 
 			void mainImage(out float4 fragColor, float2 fragCoord)
@@ -188,7 +188,7 @@
 
 				if (iTime < .5)
 				{
-					float rand = tex2D(iChannel1, uv/4.).x;
+					float rand = tex2D(iChannel1, uv / 4.).x;
 					if (rand > .9 || rand < .05)
 						fragColor = float4(0., 5., setState(STATE_WAVES), 0.);
 					else
