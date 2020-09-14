@@ -57,7 +57,7 @@ public class Player : MonoBehaviour
         Vector3 futurePosition = transform.position + stepMovement;
         Vector2 dif = futurePosition - currentPosition;
         float sign = (futurePosition.x < currentPosition.x) ? 1f : -1f;
-        transform.eulerAngles = new Vector3(0, 0, Vector2.Angle(Vector2.up, dif) * sign);
+        fs.transform.eulerAngles = new Vector3(0, 0, Vector2.Angle(Vector2.up, dif) * sign);
 
         nbFootStep++;
     }
