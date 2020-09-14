@@ -2,8 +2,8 @@
 {
 	Properties
 	{
-		_Channel0("iChannel0", 2D) = "black" {}
-		_Channel1("iChannel1", 2D) = "black" {}
+		_Channel0("iChannel0", 2D) = "black" {} // BufA
+		_Channel1("iChannel1", 2D) = "black" {} // Texture or Camera
 	}
 		SubShader
 	{
@@ -65,13 +65,6 @@
 				mainImage(fragColor, i.uv);
 				return fragColor;
 			}
-
-
-
-				/*
-					Kindergarten Art Class III - Image
-					https://www.shadertoy.com/view/4ltXR4
-				*/
 
 				void mainImage(out float4 fragColor, float2 fragCoord)
 				{

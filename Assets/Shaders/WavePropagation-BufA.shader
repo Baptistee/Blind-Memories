@@ -60,8 +60,49 @@
 			#define iMouse _MousePos
 			float4 iMouse;
 
+			void mainImage(out float4 fragColor, float2 fragCoord);
+
 			float mod(float x, float y) { return x - y * floor(x / y); }
 
+			float2 hash2(float n) { return frac(sin(float2(n, n + 1.0)) * float2(43758.5453123, 22578.1459123)); }
+
+			// smoothstep interpolation of texture
+			float4 ssamp(float2 uv, float oct)
+			{
+				uv /= oct;
+
+				float texSize = 8.;
+
+				float2 x = uv * texSize - .5;
+				float2 f = frac(x);
+
+				// remove fractional part
+				x -= f;
+
+				// apply smoothstep to fractional part
+				f = f * f * (3.0 - 2.0 * f);
+
+				// reapply fractional part
+				x += f;
+
+				uv = (x + .5) / texSize;
+				return tex2Dbias(iChannel1, float4(uv, 0., -10.0));
+			}
+
+			v2f vert(appdata v)
+			{
+				v2f o;
+				o.vertex = UnityObjectToClipPos(v.vertex);
+				o.uv = v.uv * iResolution.xy;
+				return o;
+			}
+
+			fixed4 frag(v2f i) : SV_Target
+			{
+				float4 fragColor;
+				mainImage(fragColor, i.uv);
+				return fragColor;
+			}
 
 			/*
 				Common shader mains for ShaderToy fragment programs
@@ -115,52 +156,6 @@
 			float setState(int state)
 			{
 				return float(state) + 100. * float(isToggled(67));
-			}
-
-			void mainImage(out float4 fragColor, float2 fragCoord);
-
-			v2f vert(appdata v)
-			{
-				v2f o;
-				o.vertex = UnityObjectToClipPos(v.vertex);
-				o.uv = v.uv * iResolution.xy;
-				return o;
-			}
-
-			fixed4 frag(v2f i) : SV_Target
-			{
-				float4 fragColor;
-				mainImage(fragColor, i.uv);
-				return fragColor;
-			}
-
-			float2 hash2(float n) { return frac(sin(float2(n, n + 1.0)) * float2(43758.5453123, 22578.1459123)); }
-
-			// smoothstep interpolation of texture
-			float4 ssamp(float2 uv, float oct)
-			{
-				uv /= oct;
-
-				//return tex2D( iChannel0, uv, -10.0 );
-				float texSize = 8.;
-
-				float2 x = uv * texSize - .5;
-				float2 f = frac(x);
-
-				// remove fractional part
-				x -= f;
-
-				// apply smoothstep to fractional part
-				f = f * f * (3.0 - 2.0 * f);
-
-				// reapply fractional part
-				x += f;
-
-				uv = (x + .5) / texSize;
-
-				//uv.y = 1 - uv.y;
-				//return tex2D(iChannel1, uv);
-				return tex2Dbias(iChannel1, float4(uv, 0., -10.0));
 			}
 
 
@@ -222,11 +217,6 @@
 				}
 				else
 				{
-
-
-					float2 mouse = iMouse.xy * delta;
-
-
 					// Sample stuff for derivatives
 					float4 fxp = tex2D(iChannel0, uv + offset.xz);
 					float4 fxm = tex2D(iChannel0, uv - offset.xz);

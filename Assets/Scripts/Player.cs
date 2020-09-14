@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,6 +23,11 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if ( Input.GetKeyDown(KeyCode.F) )
+        {
+            shout();
+        }
+
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
@@ -60,5 +66,10 @@ public class Player : MonoBehaviour
         fs.transform.eulerAngles = new Vector3(0, 0, Vector2.Angle(Vector2.up, dif) * sign);
 
         nbFootStep++;
+    }
+
+    void shout()
+    {
+        Debug.Log("HEY ! ");
     }
 }
