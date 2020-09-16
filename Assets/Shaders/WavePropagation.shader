@@ -5,7 +5,7 @@ Shader "Assets/WavePropagation"
 
 	Properties
 	{
-		//
+		
 	}
 	SubShader
 	{
@@ -36,13 +36,16 @@ Shader "Assets/WavePropagation"
 		sampler2D _BufferA;
 		sampler2D _BufferB;
 		sampler2D _WCTexture;
-		//float4 _
 		float2 _WCResolution;
 		float2 _PlayerPos;
 
 		// Shadertoys
 		#define iTime _Time.y // float
 		#define iResolution _ScreenParams // float3
+
+		// Unity : https://docs.unity3d.com/Manual/SL-UnityShaderVariables.html
+		#define _CameraPos _WorldSpaceCameraPos
+		#define _CameraSize unity_OrthoParams
 		
 		void mainImage(out float4 fragColor, float2 fragCoord);
 
