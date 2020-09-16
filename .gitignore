@@ -20,8 +20,15 @@ ExportedObj/
 *.user
 *.unityproj
 *.booproj
+
+# ===================================== #
+# ?                                     #
+# ===================================== #
 *.VC.opendb
 *.db
+*.VC.db
+*.VC.db-shm
+*.VC.db-wal
 
 # ============ #
 # OS generated #

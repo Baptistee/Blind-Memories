@@ -63,7 +63,6 @@ public class WavePropagation : MonoBehaviour
 		material.SetInt("iFrame", Time.frameCount);
 		material.SetTexture("_WCTexture", worldCamera.targetTexture);
 		material.SetVector("_WCResolution", new Vector2((float)1, (float)1));
-		material.SetVector("iResolution", new Vector4(Resolution, Resolution, 0.0f, 0.0f));
 		material.SetVector("_WaveResolution", new Vector4(Resolution, Resolution, 0.0f, 0.0f));
 
 		if (swap)
