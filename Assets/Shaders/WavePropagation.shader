@@ -1,12 +1,11 @@
-﻿// Original reference: https://www.shadertoy.com/view/MlVfDR
-// Translated from GLSL to HLSL by Przemyslaw Zaworski
+﻿// Original reference: https://www.shadertoy.com/view/Ms3SWH
 
 Shader "Assets/WavePropagation"
 {
 
 	Properties
 	{
-		_MainTexture("Main Texture", 2D) = "black"{}
+		//
 	}
 	SubShader
 	{
@@ -20,24 +19,30 @@ Shader "Assets/WavePropagation"
 		#include "UnityCG.cginc"
 
 		struct appdata
-			{
-				float4 vertex : POSITION;
-				float2 uv : TEXCOORD0;
-			};
+		{
+			float4 vertex : POSITION;
+			float2 uv : TEXCOORD0;
+		};
 
-			struct v2f
-			{
-				float2 uv : TEXCOORD0;
-				float4 vertex : SV_POSITION;
-			};
-
-		#define iTime _Time.y
-		// float;
-
-		#define iResolution _ScreenParams
-		// float3;
+		struct v2f
+		{
+			float2 uv : TEXCOORD0;
+			float4 vertex : SV_POSITION;
+		};
 		
-		sampler2D _MainTexture;
+		// Properties
+
+		// External
+		sampler2D _BufferA;
+		sampler2D _BufferB;
+		sampler2D _WCTexture;
+		//float4 _
+		float2 _WCResolution;
+		float2 _PlayerPos;
+
+		// Shadertoys
+		#define iTime _Time.y // float
+		#define iResolution _ScreenParams // float3
 		
 		void mainImage(out float4 fragColor, float2 fragCoord);
 
@@ -63,8 +68,7 @@ Shader "Assets/WavePropagation"
 		Pass
 		{ 
 			CGPROGRAM
-			sampler2D _BufferA;
-			int iFrame;
+
 			float4 iMouse;
 
 			static float c = .5;
@@ -79,7 +83,7 @@ Shader "Assets/WavePropagation"
 				float2 uv = fragCoord.xy * delta;
 
 				float4 f = tex2D(_BufferA, uv);
-
+				f.w = 1 - tex2D(_WCTexture, uv).r;
 				float state = f.z;
 
 				int iState = 0;
@@ -98,12 +102,10 @@ Shader "Assets/WavePropagation"
 				else if (iState == STATE_WAVES && iMouse.w > 0. && length(fragCoord.xy - iMouse.xy) < mouseRadius)
 				{
 					float dist = length(fragCoord.xy - iMouse.xy);
-					fragColor = float4(f.y, 40. * exp(-0.001 * dist * dist), 0., 0.0);
+					fragColor = float4(f.y, 10. * exp(-0.001 * dist * dist), 0., 0.0);
 				}
 				else
 				{
-					float2 mouse = iMouse.xy * delta;
-
 					float4 fxp = tex2D(_BufferA, uv + offset.xz);
 					float4 fxm = tex2D(_BufferA, uv - offset.xz);
 
@@ -112,7 +114,7 @@ Shader "Assets/WavePropagation"
 
 					float ft = c * c * (fxp.y + fxm.y + fyp.y + fym.y - 4.0 * f.y) - f.x + 2.0 * f.y;
 
-					fragColor = float4(float2(f.y, ft) * 0.995, 0., 0.0);
+					fragColor = float4(float2(f.y, ft) * 0.997, 0., 0.0);
 				}
 			}
 			
@@ -120,12 +122,48 @@ Shader "Assets/WavePropagation"
 		}
 
 //-------------------------------------------------------------------------------------------
+// Buffer B
+		Pass
+		{
+			CGPROGRAM
+
+			void mainImage(out float4 fragColor, in float2 fragCoord)
+			{
+				// Binomial filter
+
+				float2 delta = float2(1.,1.) / iResolution.xy;
+
+				float3 offset = float3(delta.x,delta.y,0.);
+
+				float2 uv = fragCoord.xy / iResolution.xy;
+
+				float4 col = float4(0., 0., 0., 0.);
+
+				col += tex2D(_BufferA,uv + float2(-delta.x,delta.y));
+				col += 2. * tex2D(_BufferA,uv + float2(0.,delta.y));
+				col += tex2D(_BufferA,uv + float2(delta.x,delta.y));
+
+				col += 2. * tex2D(_BufferA,uv + float2(-delta.x,0.));
+				col += 4. * tex2D(_BufferA,uv);
+				col += 2. * tex2D(_BufferA,uv + float2(delta.x,0.));
+
+				col += tex2D(_BufferA,uv + float2(-delta.x,-delta.y));
+				col += 2. * tex2D(_BufferA,uv + float2(0.,-delta.y));
+				col += tex2D(_BufferA,uv + float2(delta.x,-delta.y));
+
+				fragColor = col / 16.;
+			}
+
+			ENDCG
+		}
+
+//-------------------------------------------------------------------------------------------
 // Image
 		Pass
-		{ 
+		{
 			CGPROGRAM
-			sampler2D _BufferA;
-			float4 _BufferA_TexelSize;
+			sampler2D _Texture;
+			// float4 _BufferA_TexelSize;
 
 			void mainImage(out float4 fragColor, float2 fragCoord)
 			{
@@ -165,7 +203,11 @@ Shader "Assets/WavePropagation"
 
 				float2 roffset = 10. * vals.y * normalize(r.xy - n.xy) / iResolution.xy;
 
-				float3 color = tex2D(_MainTexture,uv + roffset).xyz;
+				float lroffset = length(roffset)*4;
+				//float3 color = tex2D(_MainTexture,uv + roffset).xyz;
+				//float3 color = tex2D(_MainTexture, uv).xyz;
+				//float3 color = float3(lroffset, lroffset, lroffset);
+				float3 color = float3(1., 1., 1.);
 
 				float block = 1. - vals.w;
 

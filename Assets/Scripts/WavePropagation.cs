@@ -1,12 +1,16 @@
 ﻿// Add script to quad and assign material with shader. Play.
 
+using System;
 using UnityEngine;
 
 public class WavePropagation : MonoBehaviour
 {
-	public int Resolution = 512;
+	public int Resolution;
 	public Material material;
-	RenderTexture input, output;
+	public Player player;
+	public Camera worldCamera;
+
+	RenderTexture BufferA1, BufferA2;
 	bool swap = true;
 
 	void Blit(RenderTexture source, RenderTexture destination, Material mat, string name)
@@ -33,9 +37,10 @@ public class WavePropagation : MonoBehaviour
 
 	void Start()
 	{
-		input = new RenderTexture(Resolution, Resolution, 0, RenderTextureFormat.ARGBFloat);  //buffer must be floating point RT
-		output = new RenderTexture(Resolution, Resolution, 0, RenderTextureFormat.ARGBFloat);  //buffer must be floating point RT
+		BufferA1 = new RenderTexture(Resolution, Resolution, 0, RenderTextureFormat.ARGBFloat);  //buffer must be floating point RT
+		BufferA2 = new RenderTexture(Resolution, Resolution, 0, RenderTextureFormat.ARGBFloat);  //buffer must be floating point RT
 		GetComponent<Renderer>().material = material;
+		worldCamera.targetTexture = new RenderTexture(Resolution, Resolution, 0, RenderTextureFormat.ARGBFloat);
 	}
 
 	void Update()
@@ -44,8 +49,8 @@ public class WavePropagation : MonoBehaviour
 		if (Input.GetMouseButton(0))
 		{
 			if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))
-				material.SetVector("iMouse", new Vector4(
-					hit.textureCoord.x * Resolution, hit.textureCoord.y * Resolution,
+				material.SetVector("iMouse",
+					new Vector4(hit.textureCoord.x * Resolution, hit.textureCoord.y * Resolution,
 					Mathf.Sign(System.Convert.ToSingle(Input.GetMouseButton(0))),
 					Mathf.Sign(System.Convert.ToSingle(Input.GetMouseButton(1)))));
 		}
@@ -54,27 +59,31 @@ public class WavePropagation : MonoBehaviour
 			material.SetVector("iMouse", new Vector4(0.0f, 0.0f, -1.0f, -1.0f));
 		}
 
+		material.SetVector("_PlayerPos", new Vector2(player.transform.position.x, player.transform.position.y));
 		material.SetInt("iFrame", Time.frameCount);
+		material.SetTexture("_WCTexture", worldCamera.targetTexture);
+		material.SetVector("_WCResolution", new Vector2((float)1, (float)1));
 		material.SetVector("iResolution", new Vector4(Resolution, Resolution, 0.0f, 0.0f));
+		material.SetVector("_WaveResolution", new Vector4(Resolution, Resolution, 0.0f, 0.0f));
 
 		if (swap)
 		{
-			material.SetTexture("_BufferA", input);
-			Blit(input, output, material, "_BufferA");
-			material.SetTexture("_BufferA", output);
+			material.SetTexture("_BufferA", BufferA1);
+			Blit(BufferA1, BufferA2, material, "_BufferA");
+			material.SetTexture("_BufferA", BufferA2);
 		}
 		else
 		{
-			material.SetTexture("_BufferA", output);
-			Blit(output, input, material, "_BufferA");
-			material.SetTexture("_BufferA", input);
+			material.SetTexture("_BufferA", BufferA2);
+			Blit(BufferA2, BufferA1, material, "_BufferA");
+			material.SetTexture("_BufferA", BufferA1);
 		}
 		swap = !swap;
 	}
 
 	void OnDestroy()
 	{
-		input.Release();
-		output.Release();
+		BufferA1.Release();
+		BufferA2.Release();
 	}
 }
