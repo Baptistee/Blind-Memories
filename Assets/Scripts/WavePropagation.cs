@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class WavePropagation : MonoBehaviour
 {
-	public int Resolution;
+	public int resolution;
 	public Material material;
 	public Player player;
 	public Camera worldCamera;
@@ -37,10 +37,10 @@ public class WavePropagation : MonoBehaviour
 
 	void Start()
 	{
-		BufferA1 = new RenderTexture(Resolution, Resolution, 0, RenderTextureFormat.ARGBFloat);  //buffer must be floating point RT
-		BufferA2 = new RenderTexture(Resolution, Resolution, 0, RenderTextureFormat.ARGBFloat);  //buffer must be floating point RT
+		BufferA1 = new RenderTexture(resolution, resolution, 0, RenderTextureFormat.ARGBFloat);  //buffer must be floating point RT
+		BufferA2 = new RenderTexture(resolution, resolution, 0, RenderTextureFormat.ARGBFloat);  //buffer must be floating point RT
 		GetComponent<Renderer>().material = material;
-		worldCamera.targetTexture = new RenderTexture(Resolution, Resolution, 0, RenderTextureFormat.ARGBFloat);
+		worldCamera.targetTexture = new RenderTexture(worldCamera.pixelWidth, worldCamera.pixelHeight, 0, RenderTextureFormat.ARGBFloat);
 	}
 
 	void Update()
@@ -50,7 +50,7 @@ public class WavePropagation : MonoBehaviour
 		{
 			if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))
 				material.SetVector("iMouse",
-					new Vector4(hit.textureCoord.x * Resolution, hit.textureCoord.y * Resolution,
+					new Vector4(hit.textureCoord.x * resolution, hit.textureCoord.y * resolution,
 					Mathf.Sign(System.Convert.ToSingle(Input.GetMouseButton(0))),
 					Mathf.Sign(System.Convert.ToSingle(Input.GetMouseButton(1)))));
 		}
@@ -62,8 +62,8 @@ public class WavePropagation : MonoBehaviour
 		material.SetVector("_PlayerPos", new Vector2(player.transform.position.x, player.transform.position.y));
 		material.SetInt("iFrame", Time.frameCount);
 		material.SetTexture("_WCTexture", worldCamera.targetTexture);
-		material.SetVector("_WCResolution", new Vector2((float)1, (float)1));
-		material.SetVector("_WaveResolution", new Vector4(Resolution, Resolution, 0.0f, 0.0f));
+		material.SetVector("_WCResolution", new Vector2((float)worldCamera.pixelWidth, (float)worldCamera.pixelHeight));
+		material.SetVector("_WaveResolution", new Vector4(resolution, resolution, 0.0f, 0.0f));
 
 		if (swap)
 		{

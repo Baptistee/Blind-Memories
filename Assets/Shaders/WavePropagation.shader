@@ -42,6 +42,7 @@ Shader "Assets/WavePropagation"
 		// Shadertoys
 		#define iTime _Time.y // float
 		#define iResolution _ScreenParams // float3
+		float4 iMouse;
 
 		// Unity : https://docs.unity3d.com/Manual/SL-UnityShaderVariables.html
 		#define _CameraPos _WorldSpaceCameraPos
@@ -71,8 +72,6 @@ Shader "Assets/WavePropagation"
 		Pass
 		{ 
 			CGPROGRAM
-
-			float4 iMouse;
 
 			static float c = .5;
 			static int STATE_WAVES = 0;
