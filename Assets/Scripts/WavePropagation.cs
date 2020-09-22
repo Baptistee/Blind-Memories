@@ -41,7 +41,9 @@ public class WavePropagation : MonoBehaviour
 		BufferA2 = new RenderTexture(resolution, resolution, 0, RenderTextureFormat.ARGBFloat);  //buffer must be floating point RT
 		GetComponent<Renderer>().material = material;
 		worldCamera.targetTexture = new RenderTexture(worldCamera.pixelWidth, worldCamera.pixelHeight, 0, RenderTextureFormat.ARGBFloat);
-		gameObject.transform.position = new Vector3(worldCamera.transform.position.x, worldCamera.transform.position.y, 80);
+		//gameObject.transform.position = new Vector3(worldCamera.transform.position.x, worldCamera.transform.position.y, 80);
+		//gameObject.transform.position = worldCamera.transform.position;
+		//gameObject.transform.localScale = new Vector3(worldCamera.pixelWidth, worldCamera.pixelHeight, 0);
 	}
 
 	void Update()
