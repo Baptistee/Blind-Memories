@@ -12,6 +12,8 @@ public class WavePropagation : MonoBehaviour
 
 	RenderTexture BufferA1, BufferA2;
 	bool swap = true;
+	double localPlayerPosX;
+	double localPlayerPosY;
 
 	void Blit(RenderTexture source, RenderTexture destination, Material mat, string name)
 	{
@@ -37,8 +39,8 @@ public class WavePropagation : MonoBehaviour
 
 	void Start()
 	{
-		BufferA1 = new RenderTexture(resolution, resolution, 0, RenderTextureFormat.ARGBFloat);  //buffer must be floating point RT
-		BufferA2 = new RenderTexture(resolution, resolution, 0, RenderTextureFormat.ARGBFloat);  //buffer must be floating point RT
+		BufferA1 = new RenderTexture(1920, 1080, 0, RenderTextureFormat.ARGBFloat);  //buffer must be floating point RT
+		BufferA2 = new RenderTexture(1920, 1080, 0, RenderTextureFormat.ARGBFloat);  //buffer must be floating point RT
 		GetComponent<Renderer>().material = material;
 		worldCamera.targetTexture = new RenderTexture(worldCamera.pixelWidth, worldCamera.pixelHeight, 0, RenderTextureFormat.ARGBFloat);
 		//gameObject.transform.position = new Vector3(worldCamera.transform.position.x, worldCamera.transform.position.y, 80);
@@ -48,25 +50,25 @@ public class WavePropagation : MonoBehaviour
 
 	void Update()
 	{
-		RaycastHit hit;
-		if (Input.GetMouseButton(0))
+		if (Input.GetKeyDown("space"))
 		{
-			if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))
-				material.SetVector("iMouse",
-					new Vector4(hit.textureCoord.x * resolution, hit.textureCoord.y * resolution,
-					Mathf.Sign(System.Convert.ToSingle(Input.GetMouseButton(0))),
-					Mathf.Sign(System.Convert.ToSingle(Input.GetMouseButton(1)))));
+			material.SetInt("KEY_SPACE", 1);
 		}
 		else
-		{
-			material.SetVector("iMouse", new Vector4(0.0f, 0.0f, -1.0f, -1.0f));
+        {
+			material.SetInt("KEY_SPACE", -1);
 		}
 
-		material.SetVector("_PlayerPos", new Vector2(player.transform.position.x, player.transform.position.y));
+		material.SetVector("_PlayerPos", new Vector2((float)(player.transform.position.x + (transform.localScale.x * 0.5)), (float)(player.transform.position.y + (transform.localScale.y * 0.5))));
 		material.SetInt("iFrame", Time.frameCount);
 		material.SetTexture("_WCTexture", worldCamera.targetTexture);
 		material.SetVector("_WCResolution", new Vector2((float)worldCamera.pixelWidth, (float)worldCamera.pixelHeight));
 		material.SetVector("_WaveResolution", new Vector4(resolution, resolution, 0.0f, 0.0f));
+		material.SetVector("_QuadPos", new Vector2(transform.position.x, transform.position.y));
+
+		Debug.Log("Quad   pos x : " + (transform.position.x) + ", y : " + (transform.position.y));
+		Debug.Log("Player pos x : " + (player.transform.position.x) + ", y : " + (player.transform.position.y));
+		Debug.Log("ALEXIS SOLUS : " + ( player.transform.position.x + (transform.localScale.x * 0.5) ) + ", y: " + ( player.transform.position.y + (transform.localScale.y * 0.5) ) );
 
 		if (swap)
 		{

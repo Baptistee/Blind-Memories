@@ -38,6 +38,7 @@ Shader "Assets/WavePropagation"
 		sampler2D _WCTexture;
 		float2 _WCResolution;
 		float2 _PlayerPos;
+		int KEY_SPACE;
 
 		// Shadertoys
 		#define iTime _Time.y // float
@@ -88,8 +89,6 @@ Shader "Assets/WavePropagation"
 				f.w = 1 - tex2D(_WCTexture, uv).r;
 				float state = f.z;
 
-				int iState = 0;
-
 				float mouseRadius = 10.;
 
 				if (fragCoord.x == 0. || fragCoord.y == 0. || fragCoord.x == iResolution.x - 1. || fragCoord.y == iResolution.y - 1.)
@@ -101,9 +100,11 @@ Shader "Assets/WavePropagation"
 				{
 					fragColor = float4(0., 0., 0., 1.0);
 				}
-				else if (iState == STATE_WAVES && iMouse.w > 0. && length(fragCoord.xy - iMouse.xy) < mouseRadius)
+				//else if (iMouse.w > 0. && length(fragCoord.xy - iMouse.xy) < mouseRadius)
+				else if (KEY_SPACE > 0.)
 				{
-					float dist = length(fragCoord.xy - iMouse.xy);
+					//float dist = length(fragCoord.xy - iMouse.xy);
+					float dist = length(fragCoord.xy - float2(300.,0.));
 					fragColor = float4(f.y, 10. * exp(-0.001 * dist * dist), 0., 0.0);
 				}
 				else
