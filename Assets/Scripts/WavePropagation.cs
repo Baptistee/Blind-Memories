@@ -39,8 +39,8 @@ public class WavePropagation : MonoBehaviour
 
 	void Start()
 	{
-		BufferA1 = new RenderTexture(1920, 1080, 0, RenderTextureFormat.ARGBFloat);  //buffer must be floating point RT
-		BufferA2 = new RenderTexture(1920, 1080, 0, RenderTextureFormat.ARGBFloat);  //buffer must be floating point RT
+		BufferA1 = new RenderTexture(resolution, resolution, 0, RenderTextureFormat.ARGBFloat);  //buffer must be floating point RT
+		BufferA2 = new RenderTexture(resolution, resolution, 0, RenderTextureFormat.ARGBFloat);  //buffer must be floating point RT
 		GetComponent<Renderer>().material = material;
 		worldCamera.targetTexture = new RenderTexture(worldCamera.pixelWidth, worldCamera.pixelHeight, 0, RenderTextureFormat.ARGBFloat);
 		//gameObject.transform.position = new Vector3(worldCamera.transform.position.x, worldCamera.transform.position.y, 80);
@@ -59,16 +59,13 @@ public class WavePropagation : MonoBehaviour
 			material.SetInt("KEY_SPACE", -1);
 		}
 
-		material.SetVector("_PlayerPos", new Vector2((float)(player.transform.position.x + (transform.localScale.x * 0.5)), (float)(player.transform.position.y + (transform.localScale.y * 0.5))));
+		material.SetVector("_PlayerPos", new Vector2((float)( (player.transform.position.x + (transform.localScale.x * 0.5)) - transform.position.x), (float)( (player.transform.position.y + (transform.localScale.y * 0.5)) - transform.position.y)));
 		material.SetInt("iFrame", Time.frameCount);
 		material.SetTexture("_WCTexture", worldCamera.targetTexture);
 		material.SetVector("_WCResolution", new Vector2((float)worldCamera.pixelWidth, (float)worldCamera.pixelHeight));
 		material.SetVector("_WaveResolution", new Vector4(resolution, resolution, 0.0f, 0.0f));
 		material.SetVector("_QuadPos", new Vector2(transform.position.x, transform.position.y));
-
-		Debug.Log("Quad   pos x : " + (transform.position.x) + ", y : " + (transform.position.y));
-		Debug.Log("Player pos x : " + (player.transform.position.x) + ", y : " + (player.transform.position.y));
-		Debug.Log("ALEXIS SOLUS : " + ( player.transform.position.x + (transform.localScale.x * 0.5) ) + ", y: " + ( player.transform.position.y + (transform.localScale.y * 0.5) ) );
+		material.SetVector("_QuadScale", new Vector2(transform.localScale.x, transform.localScale.y));
 
 		if (swap)
 		{

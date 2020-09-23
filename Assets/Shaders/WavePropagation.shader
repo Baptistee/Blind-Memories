@@ -38,6 +38,7 @@ Shader "Assets/WavePropagation"
 		sampler2D _WCTexture;
 		float2 _WCResolution;
 		float2 _PlayerPos;
+		float2 _QuadScale;
 		int KEY_SPACE;
 
 		// Shadertoys
@@ -89,7 +90,11 @@ Shader "Assets/WavePropagation"
 				f.w = 1 - tex2D(_WCTexture, uv).r;
 				float state = f.z;
 
-				float mouseRadius = 10.;
+				float pertubRadius = 10.;
+				float pertubIntens = 10.;
+				float damping = 0.003;
+
+				float dist = length(fragCoord.xy - _PlayerPos * iResolution.xy / _QuadScale);
 
 				if (fragCoord.x == 0. || fragCoord.y == 0. || fragCoord.x == iResolution.x - 1. || fragCoord.y == iResolution.y - 1.)
 				{
@@ -98,14 +103,14 @@ Shader "Assets/WavePropagation"
 				}
 				else if (f.w > 0.0)
 				{
-					fragColor = float4(0., 0., 0., 1.0);
+					fragColor = float4(0., 0., 10., 1.0);
 				}
 				//else if (iMouse.w > 0. && length(fragCoord.xy - iMouse.xy) < mouseRadius)
-				else if (KEY_SPACE > 0.)
+				else if (KEY_SPACE > 0. && dist < pertubRadius)
 				{
 					//float dist = length(fragCoord.xy - iMouse.xy);
-					float dist = length(fragCoord.xy - float2(300.,0.));
-					fragColor = float4(f.y, 10. * exp(-0.001 * dist * dist), 0., 0.0);
+					//float dist = length(fragCoord.xy - _PlayerPos * iResolution.xy / 512.);
+					fragColor = float4(f.y, pertubIntens * exp(-0.001 * dist * dist), 0., 0.0);
 				}
 				else
 				{
@@ -117,7 +122,7 @@ Shader "Assets/WavePropagation"
 
 					float ft = c * c * (fxp.y + fxm.y + fyp.y + fym.y - 4.0 * f.y) - f.x + 2.0 * f.y;
 
-					fragColor = float4(float2(f.y, ft) * 0.997, 0., 0.0);
+					fragColor = float4(float2(f.y, ft) * (1 - damping), 0., 0.0);
 				}
 			}
 			
