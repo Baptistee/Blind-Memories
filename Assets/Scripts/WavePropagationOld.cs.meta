@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 478d4cab669cfac49929cdd7ff74ca71
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - m_bufAShader: {fileID: 4800000, guid: d858b914233861a47a0e0ddbc6c7cdbc, type: 3}
+  - m_bufAChannel1Input: {fileID: 2800000, guid: 3d43d3f33b4b1984caaf5c17fa28cf5f, type: 3}
+  - m_imageShader: {fileID: 4800000, guid: f3739483b0c73b34db2dfcefd771f750, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
