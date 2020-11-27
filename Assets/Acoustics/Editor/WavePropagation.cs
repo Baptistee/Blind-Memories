@@ -59,7 +59,7 @@ public class WavePropagation : MonoBehaviour
 			material.SetInt("KEY_SPACE", -1);
 		}
 
-		material.SetVector("_PlayerPos", new Vector2((float)( (player.transform.position.x + (transform.localScale.x * 0.5)) - transform.position.x), (float)( (player.transform.position.y + (transform.localScale.y * 0.5)) - transform.position.y)));
+		material.SetVector("_PlayerPos", new Vector2((float)( (player.transform.position.x + (transform.localScale.x * 0.5)) - transform.position.x), (float)( (player.transform.position.z + (transform.localScale.z * 0.5)) - transform.position.z)));
 		material.SetInt("iFrame", Time.frameCount);
 		material.SetTexture("_WCTexture", worldCamera.targetTexture);
 		material.SetVector("_WCResolution", new Vector2((float)worldCamera.pixelWidth, (float)worldCamera.pixelHeight));

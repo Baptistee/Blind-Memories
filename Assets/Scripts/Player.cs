@@ -32,8 +32,8 @@ public class Player : MonoBehaviour
         movement.y = Input.GetAxisRaw("Vertical");
 
         //déplacements
-        transform.Translate(movement * movespeed * Time.deltaTime);
-        camTransform.position = new Vector3(transform.position.x, transform.position.y, -5);
+        transform.Translate(new Vector3(movement.x * movespeed * Time.deltaTime, 0, movement.y * movespeed * Time.deltaTime));
+        camTransform.position = new Vector3(transform.position.x, 10, transform.position.z);
 
         footstepCheck();
     }
@@ -63,7 +63,7 @@ public class Player : MonoBehaviour
         Vector3 futurePosition = transform.position + stepMovement;
         Vector2 dif = futurePosition - currentPosition;
         float sign = (futurePosition.x < currentPosition.x) ? 1f : -1f;
-        fs.transform.eulerAngles = new Vector3(0, 0, Vector2.Angle(Vector2.up, dif) * sign);
+        fs.transform.eulerAngles = new Vector3(90, 0, Vector2.Angle(Vector2.up, dif) * sign);
 
         nbFootStep++;
     }
