@@ -12,8 +12,6 @@ public class WavePropagation : MonoBehaviour
 
 	RenderTexture BufferA1, BufferA2;
 	bool swap = true;
-	double localPlayerPosX;
-	double localPlayerPosY;
 
 	void Blit(RenderTexture source, RenderTexture destination, Material mat, string name)
 	{
@@ -59,12 +57,13 @@ public class WavePropagation : MonoBehaviour
 			material.SetInt("KEY_SPACE", -1);
 		}
 
-		material.SetVector("_PlayerPos", new Vector2((float)( (player.transform.position.x + (transform.localScale.x * 0.5)) - transform.position.x), (float)( (player.transform.position.y + (transform.localScale.y * 0.5)) - transform.position.y)));
+		material.SetVector("_PlayerPos", new Vector2((float)( (player.transform.position.x + (transform.localScale.x * 0.5)) - transform.position.x),
+			(float)( (player.transform.position.z + (transform.localScale.y * 0.5)) - transform.position.z)));
 		material.SetInt("iFrame", Time.frameCount);
 		material.SetTexture("_WCTexture", worldCamera.targetTexture);
 		material.SetVector("_WCResolution", new Vector2((float)worldCamera.pixelWidth, (float)worldCamera.pixelHeight));
 		material.SetVector("_WaveResolution", new Vector4(resolution, resolution, 0.0f, 0.0f));
-		material.SetVector("_QuadPos", new Vector2(transform.position.x, transform.position.y));
+		material.SetVector("_QuadPos", new Vector2(transform.position.x, transform.position.z));
 		material.SetVector("_QuadScale", new Vector2(transform.localScale.x, transform.localScale.y));
 
 		if (swap)
