@@ -57,33 +57,33 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\AcousticsDemo\Scripts\AcousticsDemoSource.cs" />
+    <Compile Include="Assets\Scripts\Sound_source.cs" />
     <Compile Include="Assets\Acoustics\Scripts\AcousticsAdjust.cs" />
     <Compile Include="Assets\NavMeshComponents\Scripts\NavMeshSurface.cs" />
+    <Compile Include="Assets\Scripts\CRTEffect.cs" />
     <Compile Include="Assets\Acoustics\Scripts\AcousticsProbes.cs" />
     <Compile Include="Assets\Acoustics\Scripts\AcousticsManager.cs" />
     <Compile Include="Assets\Acoustics\Scripts\VoxelMapSection.cs" />
     <Compile Include="Assets\NavMeshComponents\Scripts\NavMeshModifier.cs" />
     <Compile Include="Assets\Acoustics\Scripts\AcousticsPAL.cs" />
     <Compile Include="Assets\NavMeshComponents\Scripts\NavMeshModifierVolume.cs" />
+    <Compile Include="Assets\Scripts\BWEffect.cs" />
+    <Compile Include="Assets\Scripts\FluidDynamics.cs" />
     <Compile Include="Assets\AcousticsDemo\Scripts\CameraController.cs" />
+    <Compile Include="Assets\Scripts\UnitShader.cs" />
+    <Compile Include="Assets\Scripts\Footstep.cs" />
     <Compile Include="Assets\Acoustics\Scripts\AcousticsGeometry.cs" />
     <Compile Include="Assets\AcousticsDemo\Scripts\AcousticsDemoControls.cs" />
     <Compile Include="Assets\Acoustics\Scripts\AcousticsAdjustExperimental.cs" />
-    <Compile Include="Assets\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\WavePropagationOld.cs" />
+    <Compile Include="Assets\Scripts\PlayerController.cs" />
     <Compile Include="Assets\Acoustics\Scripts\AcousticsInterop.cs" />
     <Compile Include="Assets\Acoustics\Scripts\AcousticsVoxels.cs" />
+    <Compile Include="Assets\Scripts\RenderTextureInspector.cs" />
     <Compile Include="Assets\NavMeshComponents\Scripts\NavMeshLink.cs" />
+    <Compile Include="Assets\Scripts\WavePropagation.cs" />
     <Compile Include="Assets\Acoustics\Scripts\AcousticsNavigation.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
-    <Compile Include="Assets\Scripts\Footstep.cs" />
-    <Compile Include="Assets\Scripts\Sound_source.cs" />
-    <Compile Include="Assets\Scripts\CRTEffect.cs" />
-    <Compile Include="Assets\Scripts\BWEffect.cs" />
-    <Compile Include="Assets\Scripts\FluidDynamics.cs" />
-    <Compile Include="Assets\Scripts\UnitShader.cs" />
-    <Compile Include="Assets\Scripts\WavePropagationOld.cs" />
-    <Compile Include="Assets\Scripts\RenderTextureInspector.cs" />
-    <Compile Include="Assets\Scripts\WavePropagation.cs" />
     <Compile Include="Assets\Scripts\Wavy.cs" />
   </ItemGroup>
   <ItemGroup>
